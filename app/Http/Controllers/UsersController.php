@@ -17,6 +17,18 @@ class UsersController extends Controller
     public function index($id)
     {
     	$user = User::find($id);
+        if($user->ppshow == false && auth()->user()->id != $user->id)
+        {
+            $user->profile_picture = 'no-image.png';
+        }
+        if($user->pnshow == false && auth()->user()->id != $user->id)
+        {
+            $user->name = 'No name information found';
+        }
+        if($user->peshow == false && auth()->user()->id != $user->id)
+        {
+            $user->email = 'No email information found';
+        }
         return view('account.index')->with('user', $user);
     }
 
@@ -45,11 +57,17 @@ class UsersController extends Controller
         	$fileNameToStore = 'wat zka ni slike';
         }
         $user->name = $request->input('name');
+        $user->bio = $request->input('bio');
         if($request->hasFile('profile_picture'))
         {
             $user->profile_picture = $fileNameToStore;
         }
         $user->email = $request->input('email');
+        $user->ppshow = ($request->input('ppshow') == 'checkbox') ? true : false;
+    
+        $user->pnshow = ($request->input('pnshow') == 'checkbox') ? true : false;
+    
+        $user->peshow = ($request->input('peshow') == 'checkbox') ? true : false;
         $user->save();
         return redirect('users/'.$user->id)->with('success', 'User information updated successfully.');
     }

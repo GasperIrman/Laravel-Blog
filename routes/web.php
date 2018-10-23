@@ -45,3 +45,4 @@ Route::post('/dashboard', 'DashboardController@searchPosts');
 Route::get('/users/{id}', 'UsersController@index');
 
 Route::put('/users/{id}', 'UsersController@update');
+Route::resource('comments', 'CommentsController');
