@@ -1,7 +1,45 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <div class="container">
       <a class="navbar-brand" href="{{ url('/') }}">
-          {{ config('app.name', 'Laravel') }}
+        @if(Request::is('/'))
+          <span id="ayy">L</span>
+          <span id="ayy">A</span>
+          <span id="ayy">R</span>
+          <span id="ayy">A</span>
+          <span id="ayy">V</span>
+          <span id="ayy">E</span>
+          <span id="ayy">L</span>
+          <span id="ayy">B</span>
+          <span id="ayy">L</span>
+          <span id="ayy">O</span>
+          <span id="ayy">G</span>
+        @elseif (Auth::check())
+          @if (Request::is('users/'.auth::user()->id))
+            <span id="ayy">L</span>
+            <span id="ayy">A</span>
+            <span id="ayy">R</span>
+            <span id="ayy">A</span>
+            <span id="ayy">V</span>
+            <span id="ayy">E</span>
+            <span id="ayy">L</span>
+            <span id="ayy">B</span>
+            <span id="ayy">L</span>
+            <span id="ayy">O</span>
+            <span id="ayy">G</span>
+          @endif
+        @else
+          <span>L</span>
+          <span>A</span>
+          <span>R</span>
+          <span>A</span>
+          <span>V</span>
+          <span>E</span>
+          <span>L</span>
+          <span>B</span>
+          <span>L</span>
+          <span>O</span>
+          <span>G</span>
+        @endif
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
           <span class="navbar-toggler-icon"></span>
