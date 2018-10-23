@@ -72,7 +72,7 @@ class PostsController extends Controller
             $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
         }
         else{
-            $fileNameToStore = "noimage.jpg";
+            $fileNameToStore = "noimage.png";
         }
 
         //Create post
@@ -110,7 +110,7 @@ class PostsController extends Controller
         $post = Post::find($id);
 
         //Check if user made the post
-        if(auth()->user()->id === $post->user_id){
+        if(auth()->user()->id === $post->user_id || auth()->user()->admin){
             return view('posts.edit')->with('post', $post);
         }
         return redirect('/posts/'.$post->id)->with('error', 'Alo ne mi takih stvari probvat');
@@ -169,7 +169,7 @@ class PostsController extends Controller
 
         $post = Post::find($id);
         //Check if user made the post
-        if(auth()->user()->id === $post->user_id){
+        if(auth()->user()->id === $post->user_id || auth()->user()->admin){
              $post->delete();
              return redirect('/posts')->with('success', 'Post Removed');
              if($post->cover_image != 'noimage.jpg')

@@ -27,21 +27,25 @@ class DashboardController extends Controller
     {
         $user_id = auth()->user()->id;
         $user = User::find($user_id);
-        return view('dashboard')->with('posts', $user->posts);
+    
+        if($user->admin == true){
+            $posts = Post::all();
+        }
+        else{
+            $posts = $user->posts;
+        }
+        
+        return view('dashboard')->with('posts', $posts);
     }
-    public function searchPosts(Request $request)
+        public function searchPosts(Request $request)
     {
         $this ->validate($request, [
                 'query' => 'required',
         ]);
         $query = $request->input('query');
-        $posts = Post::where('title', $query)->orWhere('body', '%'.$query.'%')->get();
-        //$posts = Post::select('SELECT * FROM posts WHERE title LIKE ?', $query)->get()->toArray();
-        
-        //DB::connection()->enableQueryLog();
-
-        //$wut = Post::getQueryLog();
+        $posts = Post::where('title', 'LIKE', '%'.$query.'%')->orWhere('body', 'LIKE', '%'.$query.'%')->get();
         info($posts);
         return view('dashboard')->with('posts', $posts);
     }
+
 }

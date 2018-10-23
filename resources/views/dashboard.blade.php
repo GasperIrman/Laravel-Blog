@@ -14,6 +14,9 @@
                         </div>
                     @endif
                         <a class="btn btn-primary" href="/posts/create">Create Post</a>
+                        @if(isset($_POST['query']))
+                            <a style="float: right" class="btn btn-primary" href="/dashboard">Back to dashboard</a>
+                        @endif
                         <br><br>
                         @if(isset($_POST['query']))
                             <h3 style="display: inline-block">Results</h3>
@@ -25,18 +28,22 @@
                                 {{Form::text('query', '', ['class' => 'form-control', 'placeholder' => 'Search Posts'])}}
                             </div>
                             {{Form::submit('Submit', ['class' => 'btn btn-primary', 'style' => ''])}}
-                            {!! Form::close() !!}  
+                            {!! Form::close() !!}    
                         @if(count($posts) > 0)  
                         <table class="table table-striped">
                             <tr>
                                 <th>Title</th>
-                                <th></th>   
+                                <th></th>
                                 <th></th>
                             </tr>
                             @foreach($posts as $post)
                                 <tr>
-                                    <td>{{$post->title}}</td>
-                                    <td>@if($post->user_id == Auth()->user()->id || Auth()->user()->admin)
+                                    <td><a href="/posts/{{$post->id}}">{{$post->title}}</a>
+                                            @if(Auth::user()->admin == true)
+                                                 by <a href="/users/{!! $post->user->id !!}">{{$post->user->name}}</a>
+                                            @endif
+                                            </td>
+                                            <td>@if($post->user_id == Auth()->user()->id || Auth()->user()->admin)
                                             <a href="/posts/{{$post->id}}/edit" class="btn btn-secondary">Edit</a></td>
                                             <td>{!!Form::open(['action' => ['PostsController@destroy', $post->id], 'method' => 'POST', 'class' => 'float-right'])!!}
                                                     {{Form::hidden('_method', 'DELETE')}}
@@ -45,8 +52,6 @@
                                         @else
                                             <td></td><td></td>
                                         @endif
-
-                                    
                                 </tr>
                             @endforeach
                         </table>
